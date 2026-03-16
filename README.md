@@ -1,7 +1,7 @@
 # Clothoid-R Seminar - LiDAR Detection 실습
 
-> **Autonomous Racing Simulator** 환경에서 LiDAR 포인트클라우드를 처리하는 ROS 2 실습 패키지입니다.
-> ROI 필터링 → 다운샘플링 → 지면 제거 → 클러스터링 → 바운딩 박스까지 단계별로 학습합니다.
+> **Autonomous Racing Simulator** 환경에서 LiDAR 포인트클라우드를 처리하는 ROS 2 실습 패키지
+> ROI 필터링 → 다운샘플링 → 지면 제거 → 클러스터링 → 바운딩 박스까지 단계별로 학습
 
 ---
 
@@ -70,42 +70,6 @@ PointCloud2 입력 (/car1/scan/points)
 
 ---
 
-## 실습 전 준비
-
-### 1. Docker 컨테이너 실행
-
-```bash
-# 이미지 pull (최초 1회)
-docker pull rth0824/autonomous-racing-simulator:ver1.1
-
-# 컨테이너 실행 스크립트 (run_racing_sim.sh 참고)
-docker run --gpus all -it --privileged \
-  -e DISPLAY=$DISPLAY \
-  -e __EGL_VENDOR_LIBRARY_FILENAMES=/usr/share/glvnd/egl_vendor.d/10_nvidia.json \
-  -e QT_X11_NO_MITSHM=1 \
-  -v /tmp/.X11-unix:/tmp/.X11-unix \
-  -v <볼륨경로>:/home/user/volume \
-  --network host \
-  --name autonomous-racing-sim \
-  rth0824/autonomous-racing-simulator:ver1.1 bash
-```
-
-### 2. 시뮬레이터 실행 (터미널 3개)
-
-```bash
-# [터미널 1] Gazebo 맵 실행
-gz sim -r ~/volume/Autonomous-Racing-Simulator/simulate_ws/src/server/map/racemap.sdf
-
-# [터미널 2] 차량 스폰 및 ROS-Gazebo 브릿지 실행
-source ~/volume/Autonomous-Racing-Simulator/simulate_ws/install/setup.bash
-ros2 launch server spawn_car.launch.py
-
-# [터미널 3] 키보드 조종
-python3 ~/volume/Autonomous-Racing-Simulator/simulate_ws/src/server/src/key_teleop.py
-```
-
----
-
 ## 빌드 및 실행
 
 ```bash
@@ -130,25 +94,25 @@ ros2 launch lidar_detection lidar_tutorial.launch.py car_name:=car2
 
 ```python
 # ── 1. ROI ──────────────────────────────────────────────────
-ROI_X_MIN, ROI_X_MAX =  0.0, 20.0   # 전방 거리 (m)
-ROI_Y_MIN, ROI_Y_MAX = -5.0,  5.0   # 좌우 너비 (m)
-ROI_Z_MIN, ROI_Z_MAX = -2.0,  1.5   # 높이 범위 (m)
+ROI_X_MIN, ROI_X_MAX    # 전방 거리 (m)
+ROI_Y_MIN, ROI_Y_MAX    # 좌우 너비 (m)
+ROI_Z_MIN, ROI_Z_MAX    # 높이 범위 (m)
 
 # ── 2. Voxel Downsampling ────────────────────────────────────
-VOXEL_SIZE = 0.1    # 클수록 포인트 감소, 연산 속도 향상
+VOXEL_SIZE    # 클수록 포인트 감소, 연산 속도 향상
 
 # ── 3. Ground Removal ────────────────────────────────────────
-GRID_CELL_SIZE  = 0.5   # 그리드 셀 크기 (m)
-GROUND_DIFF     = 0.2   # 지면 판단 높이 차이 (m)
+GRID_CELL_SIZE  # 그리드 셀 크기 (m)
+GROUND_DIFF   # 지면 판단 높이 차이 (m)
 
 # ── 4. Euclidean Clustering ──────────────────────────────────
-CLUSTER_RADIUS  = 0.3   # 클러스터 반경 (m)
-MIN_CLUSTER_PTS = 3     # 클러스터 최소 포인트 수
-MAX_CLUSTER_PTS = 2000  # 클러스터 최대 포인트 수
+CLUSTER_RADIUS   # 클러스터 반경 (m)
+MIN_CLUSTER_PTS     # 클러스터 최소 포인트 수
+MAX_CLUSTER_PTS  # 클러스터 최대 포인트 수
 
 # ── 5. Bounding Box ──────────────────────────────────────────
-BB_MIN_LWH = (0.5, 0.5, 0.5)   # 최소 크기 (m)
-BB_MAX_LWH = (5.0, 5.0, 5.0)   # 최대 크기 (m)
+BB_MIN_LWH   # 최소 크기 (m)
+BB_MAX_LWH   # 최대 크기 (m)
 ```
 
 > 파라미터 수정 후 `colcon build --packages-select lidar_detection` 재빌드 필요
