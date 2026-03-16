@@ -1,6 +1,7 @@
 # Clothoid-R Seminar - LiDAR Detection 실습
 
 > **Autonomous Racing Simulator** 환경에서 LiDAR 포인트클라우드를 처리하는 ROS 2 실습 패키지
+
 > ROI 필터링 → 다운샘플링 → 지면 제거 → 클러스터링 → 바운딩 박스까지 단계별로 학습
 
 ---
@@ -99,15 +100,15 @@ ROI_Y_MIN, ROI_Y_MAX    # 좌우 너비 (m)
 ROI_Z_MIN, ROI_Z_MAX    # 높이 범위 (m)
 
 # ── 2. Voxel Downsampling ────────────────────────────────────
-VOXEL_SIZE    # 클수록 포인트 감소, 연산 속도 향상
+VOXEL_SIZE      # 클수록 포인트 감소, 연산 속도 향상
 
 # ── 3. Ground Removal ────────────────────────────────────────
 GRID_CELL_SIZE  # 그리드 셀 크기 (m)
-GROUND_DIFF   # 지면 판단 높이 차이 (m)
+GROUND_DIFF     # 지면 판단 높이 차이 (m)
 
 # ── 4. Euclidean Clustering ──────────────────────────────────
 CLUSTER_RADIUS   # 클러스터 반경 (m)
-MIN_CLUSTER_PTS     # 클러스터 최소 포인트 수
+MIN_CLUSTER_PTS  # 클러스터 최소 포인트 수
 MAX_CLUSTER_PTS  # 클러스터 최대 포인트 수
 
 # ── 5. Bounding Box ──────────────────────────────────────────
