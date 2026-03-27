@@ -21,7 +21,7 @@
 ## 패키지 구조
 
 ```
-lidar_practice_ws/
+lidar_ws/
 └── src/
     └── lidar_detection/
         ├── lidar_detection/
@@ -74,7 +74,7 @@ PointCloud2 입력 (/car1/scan/points)
 ## 빌드 및 실행
 
 ```bash
-cd ~/volume/Autonomous-Racing-Simulator/lidar_practice_ws
+cd ~/volume/Autonomous-Racing-Simulator/lidar_ws
 
 # 빌드
 colcon build --packages-select lidar_detection
