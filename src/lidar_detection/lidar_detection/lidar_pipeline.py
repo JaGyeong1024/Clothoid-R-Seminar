@@ -18,6 +18,7 @@ LiDAR 처리 실습 파이프라인
 import rclpy
 from rclpy.node import Node
 
+import time
 import numpy as np
 from scipy.spatial import cKDTree
 
@@ -222,6 +223,8 @@ class LidarPipelineNode(Node):
         self.get_logger().info('LiDAR Pipeline 노드 시작')
 
     def callback(self, msg: PointCloud2):
+        t_start = time.perf_counter()
+
         # PointCloud2 → numpy (N×3)
         # read_points()는 구조체 배열을 반환하므로 필드를 따로 추출
         cloud = pc2.read_points(msg, field_names=('x', 'y', 'z'), skip_nans=True)
@@ -238,6 +241,9 @@ class LidarPipelineNode(Node):
 
         self._publish_cloud(pts, msg.header.stamp)
         self._publish_boxes(clusters, msg.header.stamp)
+
+        elapsed_ms = (time.perf_counter() - t_start) * 1000
+        self.get_logger().info(f'처리 시간: {elapsed_ms:.2f} ms')
 
     def _publish_cloud(self, pts: np.ndarray, stamp):
         """전처리 완료된 PointCloud2 발행 (RViz 확인용)"""
