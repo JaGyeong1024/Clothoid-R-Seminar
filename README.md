@@ -135,3 +135,57 @@ rviz2
 Fixed Frame: `car1/lidar_link`
 
 ---
+
+## 실습
+
+### 시뮬레이터 실행 (Terminal 1)
+```bash
+source /opt/ros/kilted/setup.bash
+cd ~/Autonomous-Racing-Simulator/simulate_ws
+colcon build --symlink-install
+gz sim -r ~/volume/Autonomous-Racing-Simulator/simulate_ws/src/server/map/racemap.sdf 
+```
+
+### ERP-42 생성 (Terminal 2)
+```bash
+cd ~/Autonomous-Racing-Simulator/simulate_ws
+source install/setup.bash
+ros2 launch server spawn_car.launch.py
+```
+
+### Topic 확인 (Terminal 3)
+```bash
+ros2 topic list
+ros2 topic info /car1/scan/points
+
+ros2 topic echo /car1/scan/points
+
+rviz2
+Fixed Frame - car1/lidar_link
+add - by topic - /car1/scan/points
+```
+
+### 코드 실행 (Terminal 4)
+```bash
+git clone https://github.com/Clothoid-R/Autonomous-Racing-Seminar.git
+
+cd ~/Autonomous-Racing-Seminar/lidar_ws
+colcon build --packages-select lidar_detection
+source install/setup.bash
+
+ros2 launch lidar_detection lidar_tutorial.launch.py
+```
+
+### Topic 확인 (Terminal 3)
+```bash
+rviz2
+Fixed Frame - car1/lidar_link
+add - by topic - /car1/scan/points
+add - by topic - /preprocessed_points
+add - by topic - /bounding_boxes
+```
+
+### 차량 추가 (Terminal 5)
+```bash
+ros2 launch server spawn_car.launch.py car_name:=car2 x_pos:=4.0 y_pos:=-1.0 z_pos:=0.3
+```
